@@ -19,6 +19,12 @@ int get_option(int type, const char *msg)
 	 */
 
 	/* Fill the code to add above functionality */
+
+	if (type == NUM)
+		return scanf("%d");
+	if (type == CHAR)
+		return scanf("%c");
+	return 0;
 }
 
 Status save_prompt(AddressBook *address_book)
