@@ -9,7 +9,7 @@
 #include "abk_menus.h"
 #include "address_book.h"
 
-int get_option(int type, char *msg)
+int get_option(int type)
 {
 	/*
 	 * Mutilfuction user intractions like
@@ -48,8 +48,8 @@ Status save_prompt(AddressBook *address_book)
 	do
 	{
 		main_menu();
-
-		option = get_option(CHAR, "\rEnter 'N' to Ignore and 'Y' to Save: ");
+		printf("%s", "\rEnter 'N' to Ignore and 'Y' to Save: ");
+		option = get_option(CHAR);
 
 		if (option == 'Y')
 		{
@@ -129,11 +129,12 @@ Status menu(AddressBook *address_book)
 	{
 		main_menu();
 
-		option = get_option(NUM, NULL);
+		option = get_option(NUM);
 
 		if ((address_book->count == 0) && (option != e_add_contact))
 		{
-			get_option(NONE, "No entries found!!. Would you like to add? Use Add Contacts");
+			printf("%s", "No entries found!!. Would you like to add? Use Add Contacts");
+			get_option(NONE);
 
 			continue;
 		}
@@ -164,7 +165,7 @@ Status menu(AddressBook *address_book)
 			do
 			{
 				list_contacts(address_book, "Contact List", &ind, "Press [a] = prev | [d] = next | [q] = menu", e_list);
-				option = (char)get_option(CHAR, NULL);
+				option = (char)get_option(CHAR);
 				if (option == 'a' && ind > 0)
 					ind--;
 				if (option == 'd' && ind < pageCount - 1)
