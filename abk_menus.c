@@ -18,8 +18,6 @@ int get_option(int type, char *msg)
 	 * Read a charcter
 	 */
 
-	/* Fill the code to add above functionality */
-
 	if (type == NUM)
 	{
 		int in;
@@ -39,6 +37,17 @@ int get_option(int type, char *msg)
 	}
 
 	return 0;
+}
+
+char get_string()
+{
+	char input[100];
+	scanf("%c[]", &input);
+	while ((getchar()) != '\n')
+		;
+	return input;
+
+	return "";
 }
 
 Status save_prompt(AddressBook *address_book)
@@ -186,7 +195,17 @@ Status menu(AddressBook *address_book)
 
 Status add_contacts(AddressBook *address_book)
 {
-	/* Add the functionality for adding contacts here */
+	printf("Please input contact name: ");
+	char name[100];
+	name = get_string();
+	printf("Please input phone number: ");
+	char phone[100];
+	phone = get_string();
+
+	for (int i = 1; i < 5; i++) {
+		printf("Please input additional phone number (or 0 when done): ");
+	}
+	return e_success;
 }
 
 Status search(const char *str, AddressBook *address_book, int loop_count, int field, const char *msg, Modes mode)
