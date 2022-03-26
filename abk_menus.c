@@ -176,6 +176,7 @@ Status menu(AddressBook *address_book)
 			save_file(address_book);
 			break;
 		case e_exit:
+			return e_exit;
 			break;
 		}
 	} while (option != e_exit);
