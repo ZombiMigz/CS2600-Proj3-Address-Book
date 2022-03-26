@@ -9,7 +9,7 @@
 #include "abk_menus.h"
 #include "address_book.h"
 
-int get_option(int type, const char *msg)
+int get_option(int type, char *msg)
 {
 	/*
 	 * Mutilfuction user intractions like
@@ -21,9 +21,23 @@ int get_option(int type, const char *msg)
 	/* Fill the code to add above functionality */
 
 	if (type == NUM)
-		return scanf("%d");
+	{
+		int in;
+		scanf("%d", &in);
+		while ((getchar()) != '\n')
+			;
+		return in;
+	}
+
 	if (type == CHAR)
-		return scanf("%c");
+	{
+		char in;
+		scanf("%c", &in);
+		while ((getchar()) != '\n')
+			;
+		return in;
+	}
+
 	return 0;
 }
 
@@ -58,7 +72,22 @@ Status list_contacts(AddressBook *address_book, const char *title, int *index, c
 	 * Should be menu based
 	 * The menu provide navigation option if the entries increase the page size
 	 */
+	printf("\n==============================================================================================================\n");
+	printf(":%-5s:%-32s:%-32s:%-32s:\n", "S.No", "Name", "Phone No.", "Email ID");
+	printf("==============================================================================================================\n");
 
+	for (int i = *index * WINDOW_SIZE; i < address_book->count && i < *index * WINDOW_SIZE + 5; i++)
+	{
+		ContactInfo info = address_book->list[i];
+		printf(":%-5d:%-32s:%-32s:%-32s:\n", info.si_no, info.name[0], info.phone_numbers[0], info.email_addresses[0]);
+		printf(":%-5s:%-32s:%-32s:%-32s:\n", "", "", info.phone_numbers[1], info.email_addresses[1]);
+		printf(":%-5s:%-32s:%-32s:%-32s:\n", "", "", info.phone_numbers[2], info.email_addresses[2]);
+		printf(":%-5s:%-32s:%-32s:%-32s:\n", "", "", info.phone_numbers[3], info.email_addresses[3]);
+		printf(":%-5s:%-32s:%-32s:%-32s:\n", "", "", info.phone_numbers[4], info.email_addresses[4]);
+
+		printf("==============================================================================================================\n");
+	}
+	printf("%s: ", msg);
 	return e_success;
 }
 
@@ -66,7 +95,7 @@ void menu_header(const char *str)
 {
 	fflush(stdout);
 
-	system("clear");
+	// system("clear");
 
 	printf("#######  Address Book  #######\n");
 	if (*str != '\0')
@@ -100,7 +129,7 @@ Status menu(AddressBook *address_book)
 	{
 		main_menu();
 
-		option = get_option(NUM, "");
+		option = get_option(NUM, NULL);
 
 		if ((address_book->count == 0) && (option != e_add_contact))
 		{
@@ -124,8 +153,25 @@ Status menu(AddressBook *address_book)
 			delete_contact(address_book);
 			break;
 		case e_list_contacts:
-			break;
 			/* Add your implementation to call list_contacts function here */
+			char option;
+			int ind = 0;
+
+			int pageCount = address_book->count / WINDOW_SIZE;
+			if (address_book->count % WINDOW_SIZE != 0)
+				pageCount++;
+
+			do
+			{
+				list_contacts(address_book, "Contact List", &ind, "Press [a] = prev | [d] = next | [q] = menu", e_list);
+				option = (char)get_option(CHAR, NULL);
+				if (option == 'a' && ind > 0)
+					ind--;
+				if (option == 'd' && ind < pageCount - 1)
+					ind++;
+			} while (option != 'q');
+			break;
+
 		case e_save:
 			save_file(address_book);
 			break;
