@@ -65,6 +65,17 @@ Status save_prompt(AddressBook *address_book)
 	return e_success;
 }
 
+void print_contact(ContactInfo *info)
+{
+	printf(":%-5d:%-32s:%-32s:%-32s:\n", info->si_no, info->name[0], info->phone_numbers[0], info->email_addresses[0]);
+	printf(":%-5s:%-32s:%-32s:%-32s:\n", "", "", info->phone_numbers[1], info->email_addresses[1]);
+	printf(":%-5s:%-32s:%-32s:%-32s:\n", "", "", info->phone_numbers[2], info->email_addresses[2]);
+	printf(":%-5s:%-32s:%-32s:%-32s:\n", "", "", info->phone_numbers[3], info->email_addresses[3]);
+	printf(":%-5s:%-32s:%-32s:%-32s:\n", "", "", info->phone_numbers[4], info->email_addresses[4]);
+
+	printf("==============================================================================================================\n");
+}
+
 Status list_contacts(AddressBook *address_book, const char *title, int *index, const char *msg, Modes mode)
 {
 	/*
@@ -79,13 +90,7 @@ Status list_contacts(AddressBook *address_book, const char *title, int *index, c
 	for (int i = *index * WINDOW_SIZE; i < address_book->count && i < *index * WINDOW_SIZE + 5; i++)
 	{
 		ContactInfo info = address_book->list[i];
-		printf(":%-5d:%-32s:%-32s:%-32s:\n", info.si_no, info.name[0], info.phone_numbers[0], info.email_addresses[0]);
-		printf(":%-5s:%-32s:%-32s:%-32s:\n", "", "", info.phone_numbers[1], info.email_addresses[1]);
-		printf(":%-5s:%-32s:%-32s:%-32s:\n", "", "", info.phone_numbers[2], info.email_addresses[2]);
-		printf(":%-5s:%-32s:%-32s:%-32s:\n", "", "", info.phone_numbers[3], info.email_addresses[3]);
-		printf(":%-5s:%-32s:%-32s:%-32s:\n", "", "", info.phone_numbers[4], info.email_addresses[4]);
-
-		printf("==============================================================================================================\n");
+		print_contact(&info);
 	}
 	printf("%s: ", msg);
 	return e_success;
