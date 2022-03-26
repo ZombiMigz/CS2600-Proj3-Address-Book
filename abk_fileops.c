@@ -63,6 +63,24 @@ void parseLine(AddressBook *address_book, FILE *fp, char *line)
 	strcpy(info.email_addresses[2], strtok(NULL, ","));
 	strcpy(info.email_addresses[3], strtok(NULL, ","));
 	strcpy(info.email_addresses[4], strtok(NULL, "\n"));
+	if (!strcmp(info.name[0], "0"))
+	{
+		strcpy(info.name[0], "");
+	}
+	for (int i = 0; i < 5; i++)
+	{
+		if (!strcmp(info.phone_numbers[i], "0"))
+		{
+			strcpy(info.phone_numbers[i], "");
+		}
+	}
+	for (int i = 0; i < 5; i++)
+	{
+		if (!strcmp(info.email_addresses[i], "0"))
+		{
+			strcpy(info.email_addresses[i], "");
+		}
+	}
 
 	address_book->list[address_book->count++] = info;
 }
@@ -95,15 +113,21 @@ Status save_file(AddressBook *address_book)
 		strcat(save, num);
 		strcat(save, ",");
 		strcat(save, info.name[0]);
+		if (!strcmp(info.name[0], ""))
+			strcat(save, "0");
 		strcat(save, ",");
 		for (int j = 0; j < 5; j++)
 		{
 			strcat(save, info.phone_numbers[j]);
+			if (!strcmp(info.phone_numbers[j], ""))
+				strcat(save, "0");
 			strcat(save, ",");
 		}
 		for (int j = 0; j < 5; j++)
 		{
 			strcat(save, info.email_addresses[j]);
+			if (!strcmp(info.email_addresses[j], ""))
+				strcat(save, "0");
 			if (j != 4)
 				strcat(save, ",");
 		}
