@@ -9,7 +9,7 @@
 #include "abk_menus.h"
 #include "address_book.h"
 
-int get_option(int type, char *msg)
+int get_option(int type)
 {
 	/*
 	 * Mutilfuction user intractions like
@@ -46,8 +46,8 @@ Status save_prompt(AddressBook *address_book)
 	do
 	{
 		main_menu();
-
-		option = get_option(CHAR, "\rEnter 'N' to Ignore and 'Y' to Save: ");
+		printf("%s", "\rEnter 'N' to Ignore and 'Y' to Save: ");
+		option = get_option(CHAR);
 
 		if (option == 'Y')
 		{
@@ -63,6 +63,19 @@ Status save_prompt(AddressBook *address_book)
 	return e_success;
 }
 
+// prints out a ContactInfo struct
+void print_contact(ContactInfo *info)
+{
+	printf(":%-5d:%-32s:%-32s:%-32s:\n", info->si_no, info->name[0], info->phone_numbers[0], info->email_addresses[0]);
+	printf(":%-5s:%-32s:%-32s:%-32s:\n", "", "", info->phone_numbers[1], info->email_addresses[1]);
+	printf(":%-5s:%-32s:%-32s:%-32s:\n", "", "", info->phone_numbers[2], info->email_addresses[2]);
+	printf(":%-5s:%-32s:%-32s:%-32s:\n", "", "", info->phone_numbers[3], info->email_addresses[3]);
+	printf(":%-5s:%-32s:%-32s:%-32s:\n", "", "", info->phone_numbers[4], info->email_addresses[4]);
+
+	printf("==============================================================================================================\n");
+}
+
+// lists a page of contacts (5 at a time based on WINDOW_SIZE)
 Status list_contacts(AddressBook *address_book, const char *title, int *index, const char *msg, Modes mode)
 {
 	/*
@@ -77,18 +90,13 @@ Status list_contacts(AddressBook *address_book, const char *title, int *index, c
 	for (int i = *index * WINDOW_SIZE; i < address_book->count && i < *index * WINDOW_SIZE + 5; i++)
 	{
 		ContactInfo info = address_book->list[i];
-		printf(":%-5d:%-32s:%-32s:%-32s:\n", info.si_no, info.name[0], info.phone_numbers[0], info.email_addresses[0]);
-		printf(":%-5s:%-32s:%-32s:%-32s:\n", "", "", info.phone_numbers[1], info.email_addresses[1]);
-		printf(":%-5s:%-32s:%-32s:%-32s:\n", "", "", info.phone_numbers[2], info.email_addresses[2]);
-		printf(":%-5s:%-32s:%-32s:%-32s:\n", "", "", info.phone_numbers[3], info.email_addresses[3]);
-		printf(":%-5s:%-32s:%-32s:%-32s:\n", "", "", info.phone_numbers[4], info.email_addresses[4]);
-
-		printf("==============================================================================================================\n");
+		print_contact(&info);
 	}
 	printf("%s: ", msg);
 	return e_success;
 }
 
+// prints a formatted header a screen/frame of the application
 void menu_header(const char *str)
 {
 	fflush(stdout);
@@ -102,6 +110,7 @@ void menu_header(const char *str)
 	}
 }
 
+// prints out options for main menu
 void main_menu(void)
 {
 	menu_header("Features:\n");
@@ -125,17 +134,21 @@ Status menu(AddressBook *address_book)
 
 	do
 	{
+		// prints main menu
 		main_menu();
 
-		option = get_option(NUM, NULL);
+		// asks user for which menu option
+		option = get_option(NUM);
 
+		// restricts user to add contact if contactlist is empty
 		if ((address_book->count == 0) && (option != e_add_contact))
 		{
-			get_option(NONE, "No entries found!!. Would you like to add? Use Add Contacts");
-
+			printf("%s", "No entries found!!. Would you like to add? Use Add Contacts");
+			get_option(NONE);
 			continue;
 		}
 
+		// different functionality depending on user input
 		switch (option)
 		{
 		case e_add_contact:
@@ -155,14 +168,16 @@ Status menu(AddressBook *address_book)
 			char option;
 			int ind = 0;
 
+			// calculate the number of pages (depends on WINDOW_SIZE which is currently 5, meaning 5 contacts per page)
 			int pageCount = address_book->count / WINDOW_SIZE;
 			if (address_book->count % WINDOW_SIZE != 0)
 				pageCount++;
 
+			// keep printing out contacts, change index if user selects "previous" or "next" options, "q" or returns to menu
 			do
 			{
 				list_contacts(address_book, "Contact List", &ind, "Press [a] = prev | [d] = next | [q] = menu", e_list);
-				option = (char)get_option(CHAR, NULL);
+				option = (char)get_option(CHAR);
 				if (option == 'a' && ind > 0)
 					ind--;
 				if (option == 'd' && ind < pageCount - 1)
@@ -171,6 +186,7 @@ Status menu(AddressBook *address_book)
 			break;
 
 		case e_save:
+			// saves data to address_book.csv
 			save_file(address_book);
 			break;
 		case e_exit:

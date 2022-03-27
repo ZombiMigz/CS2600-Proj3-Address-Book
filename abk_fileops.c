@@ -42,7 +42,7 @@ Status load_file(AddressBook *address_book)
 	{
 		// printf("No file\n");
 	}
-
+	fclose(fp);
 	return e_success;
 }
 
@@ -62,7 +62,25 @@ void parseLine(AddressBook *address_book, FILE *fp, char *line)
 	strcpy(info.email_addresses[1], strtok(NULL, ","));
 	strcpy(info.email_addresses[2], strtok(NULL, ","));
 	strcpy(info.email_addresses[3], strtok(NULL, ","));
-	strcpy(info.email_addresses[4], strtok(NULL, ","));
+	strcpy(info.email_addresses[4], strtok(NULL, "\n"));
+	if (!strcmp(info.name[0], "0"))
+	{
+		strcpy(info.name[0], "");
+	}
+	for (int i = 0; i < 5; i++)
+	{
+		if (!strcmp(info.phone_numbers[i], "0"))
+		{
+			strcpy(info.phone_numbers[i], "");
+		}
+	}
+	for (int i = 0; i < 5; i++)
+	{
+		if (!strcmp(info.email_addresses[i], "0"))
+		{
+			strcpy(info.email_addresses[i], "");
+		}
+	}
 
 	address_book->list[address_book->count++] = info;
 }
@@ -84,6 +102,40 @@ Status save_file(AddressBook *address_book)
 	 * Add the logic to save the file
 	 * Make sure to do error handling
 	 */
+
+	char save[32 * 4 * 1000];
+	strcpy(save, "");
+	for (int i = 0; i < address_book->count; i++)
+	{
+		ContactInfo info = address_book->list[i];
+		char num[20];
+		sprintf(num, "%d", info.si_no);
+		strcat(save, num);
+		strcat(save, ",");
+		strcat(save, info.name[0]);
+		if (!strcmp(info.name[0], ""))
+			strcat(save, "0");
+		strcat(save, ",");
+		for (int j = 0; j < 5; j++)
+		{
+			strcat(save, info.phone_numbers[j]);
+			if (!strcmp(info.phone_numbers[j], ""))
+				strcat(save, "0");
+			strcat(save, ",");
+		}
+		for (int j = 0; j < 5; j++)
+		{
+			strcat(save, info.email_addresses[j]);
+			if (!strcmp(info.email_addresses[j], ""))
+				strcat(save, "0");
+			if (j != 4)
+				strcat(save, ",");
+		}
+		strcat(save, "\n");
+	}
+
+	// printf("save: |%s|", save);
+	fprintf(address_book->fp, save);
 
 	fclose(address_book->fp);
 
