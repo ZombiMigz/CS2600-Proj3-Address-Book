@@ -185,9 +185,51 @@ Status menu(AddressBook *address_book)
 Status add_contacts(AddressBook *address_book)
 {
 	ContactInfo info;
+	int option;
 	char input[100];
 
-	printf("\n");
+	do {
+		printf("\n");
+		menu_header("Add Contact:");
+		printf("\n0. Back       : ");
+		printf("\n1. Name       : ");
+		printf(info.name[0]);
+		printf("\n2. Phone No 1 : ");
+		printf(info.phone_numbers[0]);
+		printf("\n3. Email ID 1 : ");
+		printf(info.email_addresses[0]);
+
+		printf("\n\nPlease select an option: ");
+		option = get_option(NUM, NULL);
+		switch (option) {
+			case 1:
+				printf("Enter the name: ");
+				scanf("%s", input);
+				strcpy(info.name[0], input);
+				break;
+			case 2:
+				printf("Enter Phone Number 1: ");
+				scanf("%s", input);
+				strcpy(info.phone_numbers[0], input);
+				break;
+			case 3:
+				printf("Enter Email ID 1: ");
+				scanf("%s", input);
+				strcpy(info.email_addresses[0], input);
+				break;
+			case 0:
+				printf("\n");
+				return e_success;
+				break;
+			default:
+				printf("Please select a valid option (0-3)\n");
+				break;
+		}
+	} while (option != 0);
+
+
+
+	/*printf("\n");
 	menu_header("Add Contact:\n");
 	printf("Please input contact name: ");
 	scanf("%s", input);
@@ -222,7 +264,7 @@ Status add_contacts(AddressBook *address_book)
 	info.si_no = address_book->list[address_book->count-1].si_no + 1;
 
 	address_book->list[address_book->count++] = info;
-	printf("\n");
+	printf("\n");*/
 	return e_success;
 }
 
