@@ -187,6 +187,8 @@ Status add_contacts(AddressBook *address_book)
 	ContactInfo info;
 	int option;
 	char input[100];
+	int phones = 0;
+	int emails = 0;
 
 	do {
 		printf("\n");
@@ -196,8 +198,18 @@ Status add_contacts(AddressBook *address_book)
 		printf(info.name[0]);
 		printf("\n2. Phone No 1 : ");
 		printf(info.phone_numbers[0]);
+		for (int i = 1; i + 1 <= phones; i++) {
+			printf("\n   Phone No %d", i + 1);
+			printf(" : ");
+			printf(info.phone_numbers[i]);
+		}
 		printf("\n3. Email ID 1 : ");
 		printf(info.email_addresses[0]);
+		for (int i = 1; i + 1 <= emails; i++) {
+			printf("\n   Email ID %d", i + 1);
+			printf(" : ");
+			printf(info.email_addresses[i]);
+		}
 
 		printf("\n\nPlease select an option: ");
 		option = get_option(NUM, NULL);
@@ -208,14 +220,28 @@ Status add_contacts(AddressBook *address_book)
 				strcpy(info.name[0], input);
 				break;
 			case 2:
-				printf("Enter Phone Number 1: ");
-				scanf("%s", input);
-				strcpy(info.phone_numbers[0], input);
+				if (phones < 5) {
+					printf("Enter Phone Number %d", phones + 1);
+					printf(": ");
+					if (phones > 0) printf("[Please renter the same option of alternate Phone Number]: ");
+					scanf("%s", input);
+					strcpy(info.phone_numbers[phones], input);
+					phones++;
+				} else  {
+					printf("Maximum Phone Numbers reached\n");
+				}
 				break;
 			case 3:
-				printf("Enter Email ID 1: ");
-				scanf("%s", input);
-				strcpy(info.email_addresses[0], input);
+				if (emails < 5) {
+					printf("Enter Email ID %d", emails + 1);
+					printf(": ");
+					if (emails > 0) printf("[Please renter the same option of alternate Email ID]: ");
+					scanf("%s", input);
+					strcpy(info.email_addresses[emails], input);
+					emails++;
+				} else  {
+					printf("Maximum Email IDs reached\n");
+				}
 				break;
 			case 0:
 				printf("\n");
@@ -226,46 +252,6 @@ Status add_contacts(AddressBook *address_book)
 				break;
 		}
 	} while (option != 0);
-
-
-
-	/*printf("\n");
-	menu_header("Add Contact:\n");
-	printf("Please input contact name: ");
-	scanf("%s", input);
-	strcpy(info.name[0], input);
-
-	printf("\n");
-	menu_header("Add Contact:\n");
-	printf("Please input a phone number: ");
-	scanf("%s", input);
-	strcpy(info.phone_numbers[0], input);
-	for (int i = 1; i < 5; i++) {
-		printf("\n");
-		menu_header("Add Contact:\n");
-		printf("Input another phone number (or 0 to continue): ");
-		scanf("%s", input);
-		strcpy(info.phone_numbers[i], input);
-	}
-
-	printf("\n");
-	menu_header("Add Contact:\n");
-	printf("Please input a email address: ");
-	scanf("%s", input);
-	strcpy(info.email_addresses[0], input);
-	for (int i = 1; i < 5; i++) {
-		printf("\n");
-		menu_header("Add Contact:\n");
-		printf("Input another email address (or 0 to continue): ");
-		scanf("%s", input);
-		strcpy(info.email_addresses[i], input);
-	}
-
-	info.si_no = address_book->list[address_book->count-1].si_no + 1;
-
-	address_book->list[address_book->count++] = info;
-	printf("\n");*/
-	return e_success;
 }
 
 Status search(const char *str, AddressBook *address_book, int loop_count, int field, const char *msg, Modes mode)
