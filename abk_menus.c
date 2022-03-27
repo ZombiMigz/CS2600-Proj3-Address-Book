@@ -39,17 +39,6 @@ int get_option(int type, char *msg)
 	return 0;
 }
 
-char get_string()
-{
-	char input[100];
-	scanf("%c[]", &input);
-	while ((getchar()) != '\n')
-		;
-	return input;
-
-	return "";
-}
-
 Status save_prompt(AddressBook *address_book)
 {
 	char option;
@@ -150,7 +139,7 @@ Status menu(AddressBook *address_book)
 		switch (option)
 		{
 		case e_add_contact:
-			/* Add your implementation to call add_contacts function here */
+			add_contacts(address_book);
 			break;
 		case e_search_contact:
 			search_contact(address_book);
@@ -195,16 +184,38 @@ Status menu(AddressBook *address_book)
 
 Status add_contacts(AddressBook *address_book)
 {
-	printf("Please input contact name: ");
-	char name[100];
-	name = get_string();
-	printf("Please input phone number: ");
-	char phone[100];
-	phone = get_string();
+	printf("\n");
+	menu_header("Features:\n");
+	
+	ContactInfo info;
+	char input[100];
 
+	printf("Please input contact name: ");
+	scanf("%s", input);
+	strcpy(info.name[0], input);
+
+	printf("Please input a phone number: ");
+	scanf("%s", input);
+	strcpy(info.phone_numbers[0], input);
 	for (int i = 1; i < 5; i++) {
-		printf("Please input additional phone number (or 0 when done): ");
+		printf("Input another phone number (or 0 to continue): ");
+		scanf("%s", input);
+		strcpy(info.phone_numbers[i], input);
 	}
+
+	printf("Please input a email address: ");
+	scanf("%s", input);
+	strcpy(info.email_addresses[0], input);
+	for (int i = 1; i < 5; i++) {
+		printf("Input another email address (or 0 to continue): ");
+		scanf("%s", input);
+		strcpy(info.email_addresses[i], input);
+	}
+
+	info.si_no = address_book->list[address_book->count-1].si_no + 1;
+
+	address_book->list[address_book->count++] = info;
+	printf("\n");
 	return e_success;
 }
 
