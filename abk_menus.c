@@ -184,29 +184,36 @@ Status menu(AddressBook *address_book)
 
 Status add_contacts(AddressBook *address_book)
 {
-	printf("\n");
-	menu_header("Features:\n");
-	
 	ContactInfo info;
 	char input[100];
 
+	printf("\n");
+	menu_header("Add Contact:\n");
 	printf("Please input contact name: ");
 	scanf("%s", input);
 	strcpy(info.name[0], input);
 
+	printf("\n");
+	menu_header("Add Contact:\n");
 	printf("Please input a phone number: ");
 	scanf("%s", input);
 	strcpy(info.phone_numbers[0], input);
 	for (int i = 1; i < 5; i++) {
+		printf("\n");
+		menu_header("Add Contact:\n");
 		printf("Input another phone number (or 0 to continue): ");
 		scanf("%s", input);
 		strcpy(info.phone_numbers[i], input);
 	}
 
+	printf("\n");
+	menu_header("Add Contact:\n");
 	printf("Please input a email address: ");
 	scanf("%s", input);
 	strcpy(info.email_addresses[0], input);
 	for (int i = 1; i < 5; i++) {
+		printf("\n");
+		menu_header("Add Contact:\n");
 		printf("Input another email address (or 0 to continue): ");
 		scanf("%s", input);
 		strcpy(info.email_addresses[i], input);
