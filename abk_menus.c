@@ -237,7 +237,7 @@ Status add_contacts(AddressBook *address_book)
 		}
 
 		printf("\n\nPlease select an option: ");
-		option = get_option(NUM, NULL);
+		option = get_option(NUM);
 		switch (option)
 		{
 		case 1:
