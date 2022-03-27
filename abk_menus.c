@@ -257,10 +257,7 @@ Status search(AddressBook *address_book, int *index)
 	char input[100];
 
 	scanf("%[^\n]%*c", input);
-	// clears input buffer (handles "\n" input)
-	while ((getchar()) != '\n')
-		;
-	printf("search parameter: %s\n", input);
+	// printf("search parameter: %s\n", input);
 
 	switch (option)
 	{
@@ -296,7 +293,7 @@ Status search(AddressBook *address_book, int *index)
 		{
 			for (int j = 0; j < 5; j++)
 			{
-				printf("Comparing |%s| and |%s|\n", address_book->list[i].email_addresses[j], input);
+				// printf("Comparing |%s| and |%s|\n", address_book->list[i].email_addresses[j], input);
 				if (!strcmp(address_book->list[i].email_addresses[j], input))
 				{
 					*index = i;
@@ -337,7 +334,7 @@ Status search_contact(AddressBook *address_book)
 	do
 	{
 		menu_header("Search Results:");
-		printf("ind: %d\n", ind);
+		// printf("ind: %d\n", ind);
 		if (ind != -1)
 		{
 			contact_header();
@@ -362,7 +359,46 @@ Status edit_contact(AddressBook *address_book)
 	/* Add the functionality for edit contacts here */
 }
 
+// remove contacts
+Status delete (AddressBook *address_book, int *ind)
+{
+	// if index is the last entry decrementing count will suffice
+	if (*ind != address_book->count - 1)
+	{
+		// shifts the array leftward starting from the deleted contact
+		for (int i = *ind; i < address_book->count - 1; i++)
+		{
+			address_book->list[i] = address_book->list[i + 1];
+		}
+	}
+
+	address_book->count--;
+	return e_success;
+}
+
 Status delete_contact(AddressBook *address_book)
 {
-	/* Add the functionality for delete contacts here */
+	// get index to remove
+	int ind;
+	search(address_book, &ind);
+
+	int option;
+	do
+	{
+		menu_header("Contact Deletion Results: ");
+		if (ind != 1)
+		{
+			delete (address_book, &ind);
+			printf("Contact successfully deleted\n");
+		}
+		else
+		{
+			printf("No contact matches your search parameter\n");
+		}
+		printf("Press [q] = back | [r] = delete another: ");
+		option = get_option(CHAR);
+	} while (option != 'q' && option != 'r');
+	if (option == 'r')
+		delete_contact(address_book);
+	return e_success;
 }
