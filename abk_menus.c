@@ -279,13 +279,14 @@ Status add_contacts(AddressBook *address_book)
 			break;
 		case 0:
 			printf("\n");
-			return e_success;
 			break;
 		default:
 			printf("Please select a valid option (0-3)\n");
 			break;
 		}
 	} while (option != 0);
+	info.si_no = address_book->list[address_book->count - 1].si_no + 1;
+	address_book->list[address_book->count++] = info;
 }
 
 void print_search_options()
