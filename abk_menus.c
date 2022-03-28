@@ -41,6 +41,7 @@ int get_option(int type)
 	return 0;
 }
 
+// saving prompt 
 Status save_prompt(AddressBook *address_book)
 {
 	char option;
@@ -132,6 +133,7 @@ void main_menu(void)
 	printf("Please select an option: ");
 }
 
+// displays main menu with different options
 Status menu(AddressBook *address_book)
 {
 	ContactInfo backup;
@@ -204,6 +206,7 @@ Status menu(AddressBook *address_book)
 	return e_success;
 }
 
+// allowing user to add contact
 Status add_contacts(AddressBook *address_book)
 {
 	// create blank ContactInfo
@@ -248,13 +251,16 @@ Status add_contacts(AddressBook *address_book)
 		// edit contact info
 		printf("\n\nPlease select an option: ");
 		option = get_option(NUM);
+		// options of what part of contact information needs to be changed
 		switch (option)
 		{
+		// name
 		case 1:
 			printf("Enter the name: ");
 			scanf("%[^\n]%*c", input);
 			strcpy(info.name[0], input);
 			break;
+		// phone number
 		case 2:
 			printf("Enter Phone Number index to be changed [Max 5]: ");
 			do
@@ -270,6 +276,7 @@ Status add_contacts(AddressBook *address_book)
 			}
 			strcpy(info.phone_numbers[option - 1], input);
 			break;
+		// email address
 		case 3:
 			printf("Enter Email Address index to be changed [Max 5]: ");
 			do
@@ -289,6 +296,7 @@ Status add_contacts(AddressBook *address_book)
 		case 0:
 			printf("\n");
 			break;
+		// invalid option chosen
 		default:
 			printf("Please select a valid option (0-3)\n");
 			break;
@@ -404,6 +412,7 @@ int search(AddressBook *address_book, int (*index)[100])
 	return count;
 }
 
+// searching for contact
 Status search_contact(AddressBook *address_book)
 {
 	// get index of display
@@ -491,6 +500,7 @@ Status delete (AddressBook *address_book, int *ind)
 	return e_success;
 }
 
+// edit contacts
 Status edit_contact(AddressBook *address_book)
 {
 
@@ -547,13 +557,16 @@ Status edit_contact(AddressBook *address_book)
 				// edit contact info
 				printf("\n\nPlease select an option: ");
 				option = get_option(NUM);
+				// options of what part of contact information needs to be changed
 				switch (option)
 				{
+				// name
 				case 1:
 					printf("Enter the name: ");
 					scanf("%[^\n]%*c", input);
 					strcpy(info.name[0], input);
 					break;
+				// phone number
 				case 2:
 					printf("Enter Phone Number index to be changed [Max 5]: ");
 					do
@@ -569,6 +582,7 @@ Status edit_contact(AddressBook *address_book)
 					}
 					strcpy(info.phone_numbers[option - 1], input);
 					break;
+				// email address
 				case 3:
 					printf("Enter Email Address index to be changed [Max 5]: ");
 					do
@@ -608,6 +622,7 @@ Status edit_contact(AddressBook *address_book)
 	return e_success;
 }
 
+// delete contacts
 Status delete_contact(AddressBook *address_book)
 {
 	// get index to remove
