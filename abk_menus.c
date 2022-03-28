@@ -233,7 +233,7 @@ Status add_contacts(AddressBook *address_book)
 		{
 			if (!strcmp(info.phone_numbers[i], ""))
 				continue;
-			printf("\n   Phone No %d : %s", i - 1, info.phone_numbers[i]);
+			printf("\n   Phone No %d : %s", i + 1, info.phone_numbers[i]);
 		}
 		printf("\n3. Email ID 1 : ");
 		printf(info.email_addresses[0]);
@@ -242,7 +242,7 @@ Status add_contacts(AddressBook *address_book)
 			// printf("** |%s|\n", info.email_addresses[i]);
 			if (!strcmp(info.email_addresses[i], ""))
 				continue;
-			printf("\n   Email ID %d : %s", i - 1, info.email_addresses[i]);
+			printf("\n   Email ID %d : %s", i + 1, info.email_addresses[i]);
 		}
 
 		// edit contact info
@@ -281,10 +281,10 @@ Status add_contacts(AddressBook *address_book)
 			printf("Comparing: |%s| and |%s|\n", input, "0");
 			if (!strcmp(input, "0"))
 			{
-				strcpy(info.email_addresses[option + 1], "");
+				strcpy(info.email_addresses[option - 1], "");
 				break;
 			}
-			strcpy(info.email_addresses[option + 1], input);
+			strcpy(info.email_addresses[option - 1], input);
 			break;
 		case 0:
 			printf("\n");
