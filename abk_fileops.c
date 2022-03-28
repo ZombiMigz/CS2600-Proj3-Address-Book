@@ -9,6 +9,7 @@
 
 void parseLine(AddressBook *address_book, FILE *fp, char *line);
 
+// checking files
 Status load_file(AddressBook *address_book)
 {
 	// opens file
@@ -85,6 +86,7 @@ void parseLine(AddressBook *address_book, FILE *fp, char *line)
 	address_book->list[address_book->count++] = info;
 }
 
+// saving information back to files
 Status save_file(AddressBook *address_book)
 {
 	/*
